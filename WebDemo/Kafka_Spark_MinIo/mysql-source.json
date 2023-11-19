@@ -1,0 +1,133 @@
+{
+    "name": "inventory-connector",  
+    "config": {
+      "connector.class": "io.debezium.connector.mysql.MySqlConnector", 
+      "tasks.max": "1",  
+      "database.hostname": "mysql",  
+      "database.port": "3306", 
+      "database.user": "huyhoang", 
+      "database.password": "huyhoang", 
+      "database.server.id": "184054",  
+      "database.include.list": "student_data",  
+      "database.history.kafka.bootstrap.servers": "kafka:9092",  
+      "database.history.kafka.topic": "Hoang.covid_data"  
+    }
+  }
+  curl -i -X POST -H "Accept:application/json" \
+  -H  "Content-Type:application/json" http://localhost:8083/connectors/ \
+  -d '{
+    "name": "mysql-kafka",
+    "config": {
+          "connector.class": "io.debezium.connector.mysql.MySqlConnector",
+          "database.hostname": "127.0.0.1",
+          "database.port": "3306",
+          "database.user": "hoang2",
+          "database.password": "Hoang@123",
+          "database.server.id": "1",
+          "database.server.name": "kafka",
+     
+          "database.history.kafka.bootstrap.servers": "localhost:9092",
+          "database.history.kafka.topic": "huhu" ,
+          "database.serverTimezone": "America/Los_Angeles",
+          "include.schema.changes": "true",
+          "key.converter": "org.apache.kafka.connect.json.JsonConverter",
+          "key.converter.schemas.enable": "false",
+          "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+          "value.converter.schemas.enable": "false",
+          "transforms":"unwrap",
+          "transforms.unwrap.type":"io.debezium.transforms.ExtractNewRecordState",
+          "transforms.unwrap.drop.tombstones":"false",
+          "transforms.unwrap.delete.handling.mode":"none",
+          "transforms.unwrap.add.fields":"op"
+     }
+  }'
+  curl -i -X POST -H "Accept:application/json" \
+    -H  "Content-Type:application/json" http://localhost:8083/connectors/ \
+    -d '{
+      "name": "mysql-connector4",
+      "config": {
+            "connector.class": "io.debezium.connector.mysql.MySqlConnector",
+            "database.hostname": "127.0.0.1",
+            "database.port": "3306",
+            "database.user": "hoang2",
+            "database.password": "Hoang@123",
+            "database.server.id": "1",
+            "database.server.name": "hehe",
+            "database.serverTimezone": "America/Los_Angeles",
+            "database.history.kafka.bootstrap.servers": "localhost:9092",
+            "database.history.kafka.topic": "student" ,
+            "include.schema.changes": "true"
+       }
+    }'
+
+  curl -i -X POST -H "Accept:application/json" -H "Content-Type:application/json" localhost:8083/connectors/ \
+-d '{
+      "name": "cassandra-json-sink4",
+      "config": {
+        "connector.class": "com.datastax.oss.kafka.sink.CassandraSinkConnector",
+        "tasks.max": "1",
+        "topics": "demo.test.people_infection_data",
+        "port": "9042",
+        "topic.demo.test.people_infection_data.covid.people_infection_data.mapping": " people_infection_data_id=key.people_infection_data_id, iso_code=value.iso_code,date=value.date,new_cases =value.new_cases ",
+        "topic.demo.test.people_infection_data.covid.people_infection_data.consistencyLevel":"LOCAL_ONE",
+        "topic.demo.test.people_infection_data.covid.people_infection_data.nullToUnset": "true",
+        "topic.demo.test.people_infection_data.covid.people_infection_data.deletesEnabled":"true",
+        "key.converter": "org.apache.kafka.connect.json.JsonConverter",
+        "key.converter.schemas.enable": "false",
+        "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+        "value.converter.schemas.enable": "false"
+      }
+}'
+
+      "column.exclude.list": "hoang.student_data.student_name",
+      "snapshot.mode": "initial",
+      "snapshot.locking.mode": "none"
+
+}
+
+curl -i -X PUT -H "Accept:application/json" \
+    -H  "Content-Type:application/json" http://localhost:8083/connectors/source-debezium-mysql-00/config/validate \
+    -d '{
+
+    "connector.class": "io.debezium.connector.mysql.MySqlConnector", 
+    "database.hostname": "127.0.0.1", 
+    "database.port": "3306", 
+    "database.user": "huyhoang", 
+    "database.password": "huyhoang", 
+    "database.server.id": "1", 
+    "topic.prefix": "fullfillment", 
+    "database.include.list": "hoang",
+    "schema.history.internal.kafka.bootstrap.servers": "localhost:9092", 
+    "schema.history.internal.kafka.topic": "Hoang.covid_data", 
+    "include.schema.changes": "true" ,
+    "connect.keep.alive": "true",
+    "database.history.kafka.topic": "Hoang.covid_data",
+    "database.server.name": "hehe",
+    "table.include.list" : "hoang.student_data",
+    "database.allowPublicKeyRetrieval" : "true",
+   
+
+}'
+
+
+{
+  "name": "inventory-connector", 
+  "config": {
+      "connector.class": "io.debezium.connector.mysql.MySqlConnector", 
+      "database.hostname": "127.0.0.1", 
+      "database.port": "3306", 
+      "database.user": "huyhoang", 
+      "database.password": "huyhoang", 
+      "database.server.id": "1", 
+      "topic.prefix": "fullfillment", 
+      "database.include.list": "student_data", 
+      "schema.history.internal.kafka.bootstrap.servers": "localhost:9092", 
+      "schema.history.internal.kafka.topic": "Hoang.covid_data", 
+      "include.schema.changes": "true" 
+  }
+}
+
+"key.converter": "org.apache.kafka.connect.storage.StringConverter",
+"value.converter": "org.apache.kafka.connect.storage.StringConverter",
+"key.converter.schemas.enable": "false",
+"value.converter.schemas.enable": "false"
