@@ -34,7 +34,7 @@ if uploaded_file is not None:
     # Đọc dữ liệu từ tệp CSV bằng Pandas
     data = pd.read_csv(uploaded_file)
     # Xử lý giá trị NaN: thay thế NaN bằng giá trị mặc định (ví dụ: 0)
-    data = data.fillna(0)  
+    data = data.fillna(-1)  
     # Hiển thị dữ liệu đọc từ tệp CSV
     st.write("Dữ liệu từ tệp CSV:")
     st.write(data)

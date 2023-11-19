@@ -86,8 +86,8 @@ elif action_upload == "DB":
     .config('spark.executor.cores', '2') \
     .config('spark.executor.instances', '1') \
     .config('spark.driver.cores', '2') \
-    .config('spark.cores.max', '3') \
-    .config('spark.executor.memory', '2G') \
+    .config('spark.cores.max', '2') \
+    .config('spark.executor.memory', '512m') \
     .config("spark.hadoop.fs.s3a.access.key", "knSN4neLpvbCAaWedDPS") \
     .config("spark.hadoop.fs.s3a.secret.key","qQEYztGdx0PjdZVkq1GK2zZ1F6btgP3W4EQaXcrk") \
     .config("spark.hadoop.fs.s3a.endpoint", "http://127.0.0.1:9000") \
@@ -96,10 +96,25 @@ elif action_upload == "DB":
     .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension") \
     .config("spark.sql.catalog.spark_catalog", "org.apache.spark.sql.delta.catalog.DeltaCatalog") \
     .getOrCreate()
-  uploaded_file = spark.read.format("delta").load("s3a://haha/Amazon_Bronze")
-
+  uploaded_file = spark.read.format("delta").load("s3a://haha/Amazon_Sliver")
+  uploaded_file = uploaded_file.toPandas()
   if uploaded_file is not None:
-    action = st.sidebar.selectbox("Choose an action:", ["Chose a action","Price distribution data", "Delete", "Edit"])
+    action = st.sidebar.selectbox("Choose a colums:", ["Chose a columns to analysis","actual_price", "ratings", "no_of_ratings(number of review)"])
+    if action == "actual_price":
+      data = uploaded_file
+      st.write("Dữ liệu từ DB:")
+      st.write(data)
+      price_distribute_chart(data,"actual_price")
+    elif action == "ratings":
+      data = uploaded_file
+      st.write("Dữ liệu từ DB:")
+      st.write(data)
+      ratings_chart(data,"ratings")
+    elif action == "no_of_ratings(number of review)":
+      data = uploaded_file
+      st.write("Dữ liệu từ DB:")
+      st.write(data)
+      number_of_reviews(data,"no_of_ratings")
 
 st.sidebar.markdown('''
 ---
