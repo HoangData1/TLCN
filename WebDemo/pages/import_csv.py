@@ -116,7 +116,9 @@ if delete_button:
 
     st.success(f"All data has been deleted from the {table_name} table.")
 # Option selectbox for actions
-action = st.selectbox("Choose an action:", ["Add", "Delete", "Edit"])
+action = st.selectbox("Choose an action:", ["Chose a action","Add", "Delete", "Edit"])
+if action == "Chose a action":
+    st.write("Plz chose a action")
 if action == "Add":
     # Add input fields for adding data
     st.write("Add Data:")
