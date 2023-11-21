@@ -4,51 +4,75 @@ import os
 from pyspark.sql import SparkSession
 import plotly.figure_factory as ff
 import plotly.express as px
-#import plost
+import matplotlib.pyplot as plt
+import plost
 
+def ratings_chart(data):
+  st.write("2")
+def price_distribute_chart(data):
+  st.markdown('### Số lượng sản phẩm dựa theo giá cả')
+  plot_bin = st.slider('Độ chi tiết', 20, 1000, 25)
+  fig, ax = plt.subplots()
+  ax.hist(data['actual_price'], bins=plot_bin)
+  st.pyplot(fig)
 
-def ratings_chart(data,columns):
-  fig = px.violin(data, columns, 
-               color_discrete_sequence = ["#FFBF00"] * len(data))
-  fig.update_layout(
-                plot_bgcolor = "#ECECEC",
-                  xaxis_title = "Rating",
-                  title = "<b>Rating Distribution of the Popular Products</b>"
-                )
-  st.plotly_chart(fig)
-
-def price_distribute_chart(data,columns):
-  x = data[columns]
-  hist_data = [x]
-  group_labels = [columns]
-
-  fig = ff.create_distplot(hist_data, group_labels, show_rug = False,
-                          colors=["#ffd514"])
-  fig.update_layout(
-                    plot_bgcolor = "#ECECEC",
-                      title = "<b>Price Distribution of Data</b>"
-                    )
-  st.plotly_chart(fig)
-
-def number_of_reviews(data,columns):
-  fig = px.histogram(data, columns,
+def number_of_reviews(data):
+  st.markdown('### Number of Reviews Distribution')
+  fig = px.histogram(data, "no_of_ratings",
                   color_discrete_sequence = ["#8B4000"] * len(data))
   fig.update_xaxes(range=[10, 5000])
   fig.update_yaxes(range=[0, 2000])
   fig.update_layout(
-                  plot_bgcolor = "#ECECEC",
-                    xaxis_title = "Number of Reviews",
-                    title = "<b>Number of Reviews Distribution</b>"
-                  )
-  st.plotly_chart(fig)
+                plot_bgcolor = "#ECECEC",
+                xaxis_title = "Number of Reviews",
+                )
+  st.write(fig)
 
+def number_of_reviews_and_discount_percent(data):
+  st.markdown('### Phần trăm giảm giá và số ratings tương ứng')
+  st.scatter_chart(
+    data,
+    x='discounting_percent',
+    y='no_of_ratings',
+    color='#0068c9',
+    size='discounting_percent'
+  )
+
+def number_of_reviews_and_price(data):
+  st.markdown('### Giá và số ratings tương ứng')
+  st.scatter_chart(
+    data,
+    x='actual_price',
+    y='no_of_ratings',
+    color='#0068c9',
+    size='actual_price'
+  )
+def ratings_and_price(data):
+  st.markdown('### Giá và ratings trung bình')
+  st.scatter_chart(
+    data,
+    x='actual_price',
+    y='ratings',
+    color='#0068c9',
+    size='actual_price'
+  )
+def show_chart(uploaded_file):
+  st.markdown('### Dữ liệu')
+  data = pd.read_csv(uploaded_file)
+  st.write(data.head(2))
+  price_distribute_chart(data)
+  # ratings_chart(data,"ratings")
+  number_of_reviews_and_discount_percent(data)
+  number_of_reviews(data)
+  number_of_reviews_and_price(data)
+  ratings_and_price(data)
+
+##sidebar
 st.set_page_config(layout='wide', initial_sidebar_state='expanded')
 
 mydir = 'C:/Users/Lenovo/Desktop/TLCN/TLCN/WebDemo/pages'
 myfile = 'style.css'
-
 training_images_labels_path = os.path.join(mydir, myfile)
-
 style = os.path.join(mydir, myfile)
 
 with open(style) as f:
@@ -61,22 +85,7 @@ if action_upload == "File":
   #file upload
   uploaded_file = st.sidebar.file_uploader("Chọn một tệp CSV", type=["csv"])
   if uploaded_file is not None:
-    action = st.sidebar.selectbox("Choose a colums:", ["Chose a columns to analysis","actual_price", "ratings", "no_of_ratings(number of review)"])
-    if action == "actual_price":
-      data = pd.read_csv(uploaded_file)
-      st.write("Dữ liệu từ tệp CSV:")
-      st.write(data)
-      price_distribute_chart(data,"actual_price")
-    elif action == "ratings":
-      data = pd.read_csv(uploaded_file)
-      st.write("Dữ liệu từ tệp CSV:")
-      st.write(data)
-      ratings_chart(data,"ratings")
-    elif action == "no_of_ratings(number of review)":
-      data = pd.read_csv(uploaded_file)
-      st.write("Dữ liệu từ tệp CSV:")
-      st.write(data)
-      number_of_reviews(data,"no_of_ratings")
+    show_chart(uploaded_file)
 
 
 elif action_upload == "DB":
@@ -99,25 +108,19 @@ elif action_upload == "DB":
   uploaded_file = spark.read.format("delta").load("s3a://haha/Amazon_Sliver")
   uploaded_file = uploaded_file.toPandas()
   if uploaded_file is not None:
-    action = st.sidebar.selectbox("Choose a colums:", ["Chose a columns to analysis","actual_price", "ratings", "no_of_ratings(number of review)"])
-    if action == "actual_price":
-      data = uploaded_file
-      st.write("Dữ liệu từ DB:")
-      st.write(data)
-      price_distribute_chart(data,"actual_price")
-    elif action == "ratings":
-      data = uploaded_file
-      st.write("Dữ liệu từ DB:")
-      st.write(data)
-      ratings_chart(data,"ratings")
-    elif action == "no_of_ratings(number of review)":
-      data = uploaded_file
-      st.write("Dữ liệu từ DB:")
-      st.write(data)
-      number_of_reviews(data,"no_of_ratings")
-
+    data = uploaded_file
+    price_distribute_chart(data)
+    # ratings_chart(data,"ratings")
+    number_of_reviews_and_discount_percent(data)
+    number_of_reviews(data)
+    number_of_reviews_and_price(data)
+    ratings_and_price(data)
 st.sidebar.markdown('''
 ---
 Created with ❤️ by [Nhóm 2]().
 ''')
+####body
 
+
+
+  
