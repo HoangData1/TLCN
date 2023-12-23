@@ -70,7 +70,7 @@ def show_chart(uploaded_file):
 ##sidebar
 st.set_page_config(layout='wide', initial_sidebar_state='expanded')
 
-mydir = 'C:/Users/Lenovo/Desktop/TLCN/TLCN/WebDemo/pages'
+mydir = 'C:/Users/Hoang/Desktop/TLCN/WebDemo/pages'
 myfile = 'style.css'
 training_images_labels_path = os.path.join(mydir, myfile)
 style = os.path.join(mydir, myfile)

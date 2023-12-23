@@ -40,7 +40,7 @@ if uploaded_file is not None:
     st.write(data)
     
     # Thay đổi các thông tin kết nối
-    mysql_host = '192.168.1.3'
+    mysql_host = '192.168.16.46'
     mysql_user = 'hoang2'
     mysql_password = 'Hoang@123'
     mysql_db = 'amazon'
@@ -98,7 +98,7 @@ if uploaded_file is not None:
 delete_button = st.button("Delete Data")
 
 if delete_button:
-    mysql_host = '192.168.1.3'
+    mysql_host = '192.168.16.46'
     mysql_user = 'hoang2'
     mysql_password = 'Hoang@123'
     mysql_db = 'amazon'
@@ -116,7 +116,7 @@ if delete_button:
 
     st.success(f"All data has been deleted from the {table_name} table.")
 # Option selectbox for actions
-action = st.selectbox("Choose an action:", ["Chose a action","Add", "Delete", "Edit"])
+action = st.selectbox("Choose an action:", ["Chose a action","Add", "Edit"])
 if action == "Chose a action":
     st.write("Plz chose a action")
 if action == "Add":
