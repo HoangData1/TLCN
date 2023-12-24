@@ -5,25 +5,6 @@ import pandas as pd
 import pymysql
 import re
 st.set_page_config(page_title="Import_file_csv", page_icon="🌐")
-page_bg_img = """
-<style>
-[data-testid="stAppViewContainer"] {
-    background-image: url("");
-    background-size: 100% 100%;
-}
-[data-testid="stHeader"]{
-    background: rgba(0,0,0,0);
-}
-[data-testid="stToolbar"]{
-    right:2rem;
-}
-[data-testid="stSidebar"] > div:first-child {
-    background-image: url("https://cdn.sforum.vn/sforum/wp-content/uploads/2020/04/mountain-valley-iphone-wallpaper-axellvak-sunset-deer-scaled.jpg");
-     background-size: 100% 100%;
-}
-</style>
-"""
-st.markdown(page_bg_img, unsafe_allow_html=True)
 # Khởi tạo ứng dụng Streamlit
 st.title('CSV to MySQL')
 
@@ -147,40 +128,6 @@ if action == "Add":
 
         st.success(f"Data has been added to the {table_name} table.")
 
-# elif action == "Delete":
-#     # Add input fields for deleting data
-#     st.write("Delete Data:")
-#     delete_data = {}
-
-#     for column in data.columns:
-#         delete_data[column] = st.text_input(column)
-
-#     # Delete button for deleting data
-#     delete_button = st.button("Delete Data")
-#     if delete_button:
-#     # Connect to the MySQL database
-#         conn = pymysql.connect(host=mysql_host, user=mysql_user, password=mysql_password, database=mysql_db)
-#         cursor = conn.cursor()
-
-#         # Construct the DELETE statement based on the input data
-#         delete_sql = f"DELETE FROM {table_name} WHERE "
-
-#         conditions = []
-#         values = []
-#         for column, value in delete_data.items():
-#             conditions.append(f"{column} = %s")
-#             values.append(value)
-
-#         delete_sql += " AND ".join(conditions)
-
-#         # Execute the DELETE statement
-#         cursor.execute(delete_sql, tuple(values))
-
-#         # Commit the changes and close the connection
-#         conn.commit()
-#         conn.close()
-
-#         st.success(f"Data has been deleted from the {table_name} table.")
 
 elif action == "Edit":
     # Add input fields for editing data
