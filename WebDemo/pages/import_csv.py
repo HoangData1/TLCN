@@ -63,18 +63,6 @@ if uploaded_file is not None:
     conn.close()
     
     st.success(f"Dữ liệu đã được chèn vào bảng {table_name} trong cơ sở dữ liệu MySQL.")
-    # Thêm biến cờ để theo dõi trạng thái quá trình chạy
-    # process_started = False
-
-    # # Khi nút "PROCESS" được nhấp
-    # if st.button("PROCESS"):
-    #     process_started = True
-
-    # # Thực hiện công việc Spark và Delta Lake khi biến cờ là True
-    # if process_started:
-    #     # Gọi hàm thực hiện công việc Spark và Delta Lake
-    #     spark_write.main()  # Thay thế bằng tên hàm thích hợp từ tệp spark_write
-    #     spark_read.main()
 # Add a delete button
 delete_button = st.button("Delete Data")
 
